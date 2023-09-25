@@ -4,6 +4,7 @@ COPY loxury/ /var/www/localhost/htdocs
 LABEL Yash=Rohit \  
     bad=singam  \
     good=juluru
+EXPOSE 444/tcp   
 CMD ["httpd", "-D", "FOREGROUND"]
 
 
