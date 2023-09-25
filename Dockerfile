@@ -5,6 +5,5 @@ LABEL Yash=Rohit \
     bad=singam  \
     good=juluru
 EXPOSE 444/tcp   
-CMD ["httpd", "-D", "FOREGROUND"]
-
-
+ENV admin=you \
+    aa=bb
