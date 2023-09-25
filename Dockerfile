@@ -7,5 +7,5 @@ LABEL Yash=Rohit \
 EXPOSE 444/tcp   
 ENV admin=you \
     aa=bb
-ADD https://github.com/rafaelreis-hotmart/Audio-Sample-files/blob/master/sample.mp3 /var/www/localhost/htdocs/
+ADD https://github.com/readmeio/import-samples/blob/master/import-sample-multiple-versions.zip /var/www/localhost/htdocs/
 CMD ["httpd", "-D", "FOREGROUND"]
