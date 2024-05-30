@@ -1,4 +1,4 @@
-Palanikumar M 30-05-2024 10:20 • name: Terraform CI Pipeline
+name: Terraform CI Pipeline
 
 on:
 push:
