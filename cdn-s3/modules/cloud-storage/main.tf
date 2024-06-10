@@ -10,12 +10,13 @@ resource "google_compute_backend_bucket" "static_website_bucket" {
   enable_cdn  = var.enable_cdn
 
 
-  
+
 }
 
 resource "google_compute_url_map" "static_website_url_map" {
   name            = var.url_map
   default_service = google_compute_backend_bucket.static_website_bucket.id
+
 
 
 }
