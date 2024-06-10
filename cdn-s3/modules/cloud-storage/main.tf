@@ -13,4 +13,6 @@ resource "google_compute_backend_bucket" "static_website_bucket" {
 resource "google_compute_url_map" "static_website_url_map" {
   name            = var.url_map
   default_service = google_compute_backend_bucket.static_website_bucket.id
+
+  
 }
