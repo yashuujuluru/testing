@@ -6,6 +6,10 @@ module "cloud_storage" {
   location            = var.location
   url_map             = var.url_map
   bucket_level_access = var.bucket_level_access
+
+
+
+
   
 }
 
