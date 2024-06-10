@@ -9,5 +9,4 @@ output "static-website-url_map" {
 
 output "backend-buck-id" {
   value = google_compute_backend_bucket.static_website_bucket.id
-
 }
