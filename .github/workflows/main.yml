@@ -1,5 +1,4 @@
 name: Terraform Checks
-
 on:
   push:
     paths: 
