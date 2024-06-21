@@ -10,7 +10,7 @@ jobs:
   terraform_checks:
     runs-on: ubuntu-latest
     env:
-        path1: 'open-api/terraform/**'
+        path1: 'open-api/terraform/'
        
     steps:
       - uses: actions/checkout@v3
