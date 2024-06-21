@@ -3,14 +3,14 @@ name: Terraform Checks
 on:
   push:
     paths: 
-       - 'cloudrun/' 
+       - 'open-api/terraform/**'
       
 
 jobs:
   terraform_checks:
     runs-on: ubuntu-latest
     env:
-        path1: "/cloudrun"
+        path1: 'open-api/terraform/**'
        
     steps:
       - uses: actions/checkout@v3
