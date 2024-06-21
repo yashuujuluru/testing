@@ -1,10 +1,10 @@
 resource "google_artifact_registry_repository" "my_repo" {
-  provider         = google
-  location         = var.region
-  repository_id    = "my-repo-kumar3"
-  description      = "Docker repository"
-  format           = "DOCKER"
-  project          = var.project_id
+  provider      = google
+  location      = var.region
+  repository_id = "my-repo-kumar3"
+  description   = "Docker repository"
+  format        = "DOCKER"
+  project       = var.project_id
 }
 
 resource "null_resource" "docker_build_and_push" {
@@ -43,9 +43,9 @@ resource "google_cloud_run_service" "default" {
 
   template {
     spec {
-      service_account_name = "cloud-run@graphite-lamp-421814.iam.gserviceaccount.com"  # Correct service account
+      service_account_name = "cloud-run@graphite-lamp-421814.iam.gserviceaccount.com" # Correct service account
       containers {
-        name  = "hello-1"
+        name = "hello-1"
         ports {
           container_port = 80
         }
@@ -69,9 +69,9 @@ resource "google_cloud_run_service" "hello-world" {
 
   template {
     spec {
-      service_account_name = "cloud-run@graphite-lamp-421814.iam.gserviceaccount.com"  # Correct service account
+      service_account_name = "cloud-run@graphite-lamp-421814.iam.gserviceaccount.com" # Correct service account
       containers {
-        name  = "hello-world"
+        name = "hello-world"
         ports {
           container_port = 80
         }
@@ -117,5 +117,5 @@ output "cloudrun_srv2_url" {
 }
 
 output "hello_world_url" {
-  value =  replace(google_cloud_run_service.hello-world.status[0].url, "https://", "")
+  value = replace(google_cloud_run_service.hello-world.status[0].url, "https://", "")
 }
