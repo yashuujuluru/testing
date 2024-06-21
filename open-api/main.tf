@@ -1,3 +1,6 @@
+
+
+
 resource "null_resource" "deploy_openapi" {
   provisioner "local-exec" {
     command = <<EOT
