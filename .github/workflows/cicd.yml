@@ -1,0 +1,60 @@
+name: Terraform Checks
+
+on:
+  push:
+    paths: 
+       - 'open-api/code/**'
+      
+
+jobs:
+  terraform_checks:
+    runs-on: ubuntu-latest
+    env:
+        path1: 'open-api/code/'
+       
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+         project_id: ${{ secrets.GCP_PROJECT_ID }}
+         service_account_key: ${{ secrets.GCP_CI_SERVICE_ACCOUNT_KEY }}
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CI_SERVICE_ACCOUNT_KEY }}
+
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        run: |
+         cd "${{ github.workspace }}${{ env.path1 }}"
+         terraform init
+         terraform fmt --recursive
+    
+      - name: Terraform Validate
+        run: |
+         cd "${{ github.workspace }}${{ env.path1 }}"
+         terraform validate
+      
+
+      - name: Download TFLint using snapd
+        run: |
+          sudo apt update
+          sudo apt install snapd
+          sudo snap install tflint
+        working-directory: ${{ github.workspace }}
+
+      - name: Verify TFLint Installation
+        run: tflint --version
+        
+      - name: Running tflint in the Working Directory
+        run: |
+            cd "${{ github.workspace }}${{ env.path1 }}"
+            tflint --recursive
+            echo 'tflint Passed'
+            
