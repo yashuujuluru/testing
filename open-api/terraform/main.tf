@@ -34,6 +34,8 @@ output "docker_image_url" {
 
 #cloudrun
 
+
+
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv2"
   location = "us-central1"
