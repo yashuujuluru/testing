@@ -33,7 +33,7 @@ output "docker_image_url" {
 }
 
 #cloudrun
-
+#creating cloud run
 
 
 resource "google_cloud_run_service" "default" {
