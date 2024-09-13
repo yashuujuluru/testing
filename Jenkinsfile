@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your GitHub repository
-                git branch: 'master', url: 'https://github.com/yashuujuluru/testing'
+                git branch: 'master', url: 'https://github.com/yashuujuluru/testing.git'
             }
         }
 
