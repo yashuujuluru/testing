@@ -41,9 +41,33 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            cleanWs()
+    stage('K8S Deploy') {
+            steps {
+                script {
+                
+                        sh 'aws eks update-kubeconfig --name jenkins-eks --region <AWS_DEFAULT_REGION>'
+                        sh 'kubectl apply -f deployment.yaml'
+                    }
+                }
+            }
+       }  
+
+        stage('Get Service URL') {
+            steps {
+                script {
+                    def serviceUrl = ""
+                    // Wait for the LoadBalancer IP to be assigned
+                    timeout(time: 5, unit: 'MINUTES') {
+                        while(serviceUrl == "") {
+                            serviceUrl = sh(script: "kubectl get svc html -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'", returnStdout: true).trim()
+                            if(serviceUrl == "") {
+                                echo "Waiting for the LoadBalancer IP..."
+                                sleep 10
+                            }
+                        }
+                    }
+                    echo "Service URL: http://${serviceUrl}"
+                }
+            }
         }
     }
-}
