@@ -8,7 +8,6 @@ pipeline {
         REPOSITORY_URI = "public.ecr.aws/g8u2o4h7/jenkins"
     }
 
-
     stages {
         stage('Logging into AWS ECR') {
             steps {
@@ -19,7 +18,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Building image') {
             steps {
@@ -39,18 +37,15 @@ pipeline {
                 }
             }
         }
-    }
 
-    stage('K8S Deploy') {
+        stage('K8S Deploy') {
             steps {
                 script {
-                
-                        sh 'aws eks update-kubeconfig --name jenkins-eks --region <AWS_DEFAULT_REGION>'
-                        sh 'kubectl apply -f deployment.yaml'
-                    }
+                    sh 'aws eks update-kubeconfig --name jenkins-eks --region ${AWS_DEFAULT_REGION}'
+                    sh 'kubectl apply -f deployment.yaml'
                 }
             }
-       }  
+        }
 
         stage('Get Service URL') {
             steps {
@@ -71,3 +66,4 @@ pipeline {
             }
         }
     }
+}
