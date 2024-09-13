@@ -38,11 +38,13 @@ pipeline {
             }
         }
 
-        stage('K8S Deploy') {
+           stage('K8S Deploy') {
             steps {
                 script {
-                    sh 'aws eks update-kubeconfig --name jenkins-eks --region ${AWS_DEFAULT_REGION}'
-                    sh 'kubectl apply -f deployment.yaml'
+                    withAWS(credentials: '779846825510', region: '${AWS_DEFAULT_REGION}') {
+                        sh 'aws eks update-kubeconfig --name jenkins-eks --region ${AWS_DEFAULT_REGION}'
+                        sh 'kubectl apply -f deployment.yaml'
+                    }
                 }
             }
         }
