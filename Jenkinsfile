@@ -1,56 +1,49 @@
 pipeline {
     agent any
-
     environment {
-        // Set your environment variables here
-        AWS_REGION = 'us-east-1'  // E.g., us-east-1
-        ECR_REPO_NAME= 'yashu' // E.g., 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-repo
-        ECR_REPO    = '025066245756.dkr.ecr.us-east-1.amazonaws.com/yashu'
-        IMAGE_TAG = "v1"  // Tagging image with Jenkins build number
+        AWS_ACCOUNT_ID="779846825510"
+        AWS_DEFAULT_REGION="us-east-1" // Make sure this is correct
+        IMAGE_REPO_NAME="jenkins"
+        IMAGE_TAG="v4"
+        REPOSITORY_URI = "public.ecr.aws/g8u2o4h7/jenkins"
     }
 
+
     stages {
-        stage('AWS ECR Login') {
+        stage('Logging into AWS ECR') {
             steps {
-                // AWS CLI Login to ECR
                 script {
-                    sh '''
-                    # Login to ECR
-                    aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
-                    '''
+                    sh """
+                    aws ecr-public get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URI}
+                    """
                 }
             }
         }
 
-        stage('Build Docker Image') {
+
+        stage('Building image') {
             steps {
-                // Build the Docker image
                 script {
-                    sh '''
-                    docker build -t $ECR_REPO:$IMAGE_TAG .
-                    '''
+                    dockerImage = docker.build("${IMAGE_REPO_NAME}:${IMAGE_TAG}")
                 }
             }
         }
 
-        stage('Push Docker Image to ECR') {
+        stage('Pushing to ECR') {
             steps {
-                // Push the Docker image to ECR
                 script {
-                    sh '''
-                    docker push $ECR_REPO:$IMAGE_TAG
-                    '''
+                    sh """
+                    docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}
+                    docker push ${REPOSITORY_URI}:${IMAGE_TAG}
+                    """
                 }
             }
         }
     }
 
     post {
-        success {
-            echo "Docker image successfully built and pushed to ECR: $ECR_REPO:$IMAGE_TAG"
-        }
-        failure {
-            echo "Build failed. Check the Jenkins logs for more information."
+        always {
+            cleanWs()
         }
     }
 }
